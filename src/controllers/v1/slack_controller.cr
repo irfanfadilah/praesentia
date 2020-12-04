@@ -25,7 +25,7 @@ class V1::SlackController < ApplicationController
 
   private def update_block_instance
     BlockInstanceUpdateJob
-      .new(user_id: "U9ACKQ740", channel_id: params[:channel_id])
+      .new(user_id: params[:user_id], channel_id: params[:channel_id])
       .perform
   end
 end

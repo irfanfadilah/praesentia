@@ -37,6 +37,13 @@ Amber::Server.configure do
     get "/ping", V1::PingController, :index
   end
 
+  routes :api, "/v1/slack" do
+    post "/online", V1::SlackController, :online
+    post "/offline", V1::SlackController, :offline
+    post "/away", V1::SlackController, :away
+    post "/back", V1::SlackController, :back
+  end
+
   routes :static do
     # Each route is defined as follow
     # verb resource : String, controller : Symbol, action : Symbol

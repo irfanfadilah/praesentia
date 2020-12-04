@@ -35,8 +35,8 @@ class Slack
 
   def self.activity_log(channel_id)
     Activity.where(channel_id: channel_id)
-      .order(updated_at: :desc)
-      .limit(5)
+      .order(updated_at: :asc)
+      .limit(10)
   end
 
   def self.new_block(instance)

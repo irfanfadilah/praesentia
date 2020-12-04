@@ -28,9 +28,9 @@ Amber::Server.configure do
   end
 
   routes :web do
-    
+
       get "/", HomeController, :index
-    
+
   end
 
   routes :api, "/v1" do
@@ -42,6 +42,8 @@ Amber::Server.configure do
     post "/offline", V1::SlackController, :offline
     post "/away", V1::SlackController, :away
     post "/back", V1::SlackController, :back
+    post "/post", V1::SlackController, :post
+    post "/update", V1::SlackController, :update
   end
 
   routes :static do

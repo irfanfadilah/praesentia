@@ -15,6 +15,9 @@ targets:
   amber:
     main: lib/amber/src/amber/cli.cr
 
+  praesentia_worker:
+    main: src/worker.cr
+
 dependencies:
   amber:
     github: amberframework/amber
@@ -40,6 +43,9 @@ dependencies:
   citrine-i18n:
     github: amberframework/citrine-i18n
     version: ~> 0.4.0
+
+  mosquito:
+    github: robacarp/mosquito
 
 development_dependencies:
   garnet_spec:

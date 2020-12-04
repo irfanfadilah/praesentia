@@ -8,6 +8,7 @@
 # affect the behavior of the application.
 
 require "amber"
+require "mosquito"
 require "./settings"
 require "./logger"
 require "./i18n"
@@ -17,6 +18,9 @@ require "./initializers/**"
 # Start Generator Dependencies: Don't modify.
 require "../src/models/**"
 # End Generator Dependencies
+
+require "../src/services/**"
+require "../src/jobs/**"
 
 require "../src/controllers/application_controller"
 require "../src/controllers/**"

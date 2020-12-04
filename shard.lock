@@ -52,6 +52,10 @@ shards:
     git: https://github.com/amberframework/granite.git
     version: 0.21.1
 
+  habitat:
+    git: https://github.com/luckyframework/habitat.git
+    version: 0.4.4
+
   i18n:
     git: https://github.com/TechMagister/i18n.cr.git
     version: 0.3.1
@@ -83,6 +87,10 @@ shards:
   micrate:
     git: https://github.com/amberframework/micrate.git
     version: 0.8.0
+
+  mosquito:
+    git: https://github.com/robacarp/mosquito.git
+    version: 0.9.0
 
   mysql:
     git: https://github.com/crystal-lang/crystal-mysql.git

@@ -28,9 +28,7 @@ Amber::Server.configure do
   end
 
   routes :web do
-
-      get "/", HomeController, :index
-
+    get "/", HomeController, :index
   end
 
   routes :api, "/v1" do

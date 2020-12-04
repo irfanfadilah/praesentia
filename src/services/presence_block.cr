@@ -21,7 +21,7 @@ class PresenceBlock
   def text_block(type, text) : BlockType
     {
       "type" => type,
-      "text" => text
+      "text" => text.blank? ? "---" : text
     }
   end
 

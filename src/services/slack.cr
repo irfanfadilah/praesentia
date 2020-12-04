@@ -46,7 +46,7 @@ class Slack
       logs: activity_log(instance.channel_id)
     )
     response = run("postMessage", payload(instance, block))
-    json = JSON.parse(response.body_io)
+    json = JSON.parse(response.body)
     if json["ok"].as_bool
       instance.update!(timestamp: json["ts"].as_s)
     end

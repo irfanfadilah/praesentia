@@ -47,7 +47,7 @@ class PresenceBlock
   end
 
   def log_comment(user) : String
-      if user.comment.to_s.blank?
+    if user.comment.to_s.blank?
       "<@#{user.user_id}> is #{user.state}"
     else
       "<@#{user.user_id}> is #{user.state} \"#{user.comment}\""

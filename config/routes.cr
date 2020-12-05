@@ -36,6 +36,7 @@ Amber::Server.configure do
   end
 
   routes :api, "/v1/slack" do
+    post "/interactivity", V1::SlackController, :interactivity
     post "/online", V1::SlackController, :online
     post "/offline", V1::SlackController, :offline
     post "/away", V1::SlackController, :away

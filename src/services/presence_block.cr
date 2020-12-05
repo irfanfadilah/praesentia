@@ -46,9 +46,16 @@ class PresenceBlock
     }
   end
 
+  def log_comment(user) : String
+      if user.comment.to_s.blank?
+      "<@#{user.user_id}> is #{user.state}"
+    else
+      "<@#{user.user_id}> is #{user.state} \"#{user.comment}\""
+    end
+  end
+
   def last_logs : String
-    logs.map { |elt| "<@#{elt.user_id}> is #{elt.state} \"#{elt.comment}\"" }
-        .join("  \n")
+    logs.map { |elt| log_comment(elt) }.join("  \n")
   end
 
   def actions_block : BlockType

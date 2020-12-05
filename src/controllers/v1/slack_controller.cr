@@ -1,62 +1,49 @@
 class V1::SlackController < ApplicationController
-  def interactivity
-    slack_params.validate!
-    data = JSON.parse slack_params["payload"]
-    action = data["actions"][0]["action_id"]
-
-    puts data
-    puts action
-
-    respond_with(200) { text "" }
-  end
-
   def online
-    activity = Activity.online(slack_params)
+    Activity.online(params)
     update_block_instance
     respond_with(200) { text "" }
   end
 
   def offline
-    activity = Activity.offline(slack_params)
+    Activity.offline(params)
     update_block_instance
     respond_with(200) { text "" }
   end
 
   def away
-    Activity.away(slack_params)
+    Activity.away(params)
     update_block_instance
     respond_with(200) { text "" }
   end
 
   def back
-    Activity.back(slack_params)
+    Activity.back(params)
     update_block_instance
     respond_with(200) { text "" }
   end
 
-  private def slack_params
-    params.validation do
-      # Slash Commands
-      optional(:channel_id)
-      optional(:user_id)
-      optional(:text)
-      # Block Actions
-      optional(:payload)
-    end
-  end
+  def interactivity
+    data = JSON.parse params[:payload]
+    action = data["actions"][0]["action_id"]
 
-  private def activity_params
-    slack_params.validate!
+    params[:user_id] = data["user"]["id"].as_s
+    params[:channel_id] = data["channel"]["id"].as_s
+    params[:text] = ""
 
-    if params["type"] == "block_actions"
-      {
-        channel_id: params["channel"]["id"],
-        user_id: params["user"]["id"],
-        text: nil
-      }
-    else
-      params
+    case
+    when action == "Online"
+      Activity.online(params)
+    when action == "Offline"
+      Activity.offline(params)
+    when action == "Away"
+      Activity.away(params)
+    when action == "Back"
+      Activity.back(params)
     end
+
+    update_block_instance
+    respond_with(200) { text "" }
   end
 
   private def update_block_instance

@@ -1,5 +1,4 @@
 class PresenceBlock
-
   alias BlockStr = Hash(String, String)
   alias BlockDstr = Hash(String, String | BlockStr)
   alias BlockArray = Hash(String, String | Array(BlockDstr))
@@ -56,10 +55,10 @@ class PresenceBlock
     {
       "type" => "actions",
       "elements" => [
-        button("online"),
-        button("away"),
-        button("back"),
-        button("offline")
+        button("Online"),
+        button("Away"),
+        button("Back"),
+        button("Offline")
       ]
     }
   end

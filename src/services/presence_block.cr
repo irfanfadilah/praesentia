@@ -7,7 +7,7 @@ class PresenceBlock
   getter block_array : Array(BlockType)
   getter active : Granite::Query::Builder(Activity)
   getter away : Granite::Query::Builder(Activity)
-  getter logs : Granite::Query::Builder(Activity)
+  getter logs : Array(Activity)
 
   def self.build(active, away, logs)
     new(active, away, logs).to_block_array

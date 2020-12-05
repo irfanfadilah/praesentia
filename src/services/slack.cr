@@ -7,7 +7,7 @@ class Slack
   def self.headers
     headers = HTTP::Headers{
       "Content-Type" => "application/json",
-      "Authorization" => "Bearer xoxb-2176750000-1534408179079-Vb4fnD2RkvnAwR6no3f3tkEM"
+      "Authorization" => "Bearer " + ENV["SLACK_APP_TOKEN"]
     }
   end
 
@@ -35,8 +35,10 @@ class Slack
 
   def self.activity_log(channel_id)
     Activity.where(channel_id: channel_id)
-      .order(updated_at: :asc)
+      .order(updated_at: :desc)
       .limit(10)
+      .assembler.select.run # wizardy
+      .reverse
   end
 
   def self.new_block(instance)

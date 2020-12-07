@@ -58,7 +58,7 @@ class V1::SlackController < ApplicationController
   end
 
   def respawn
-    spawn { respawn_block_instance }
+    spawn respawn_block_instance
     respond_with(200) { text "" }
   end
 

@@ -6,20 +6,20 @@ class Slack
 
   def self.headers
     headers = HTTP::Headers{
-      "Content-Type" => "application/json",
-      "Authorization" => "Bearer " + ENV["SLACK_APP_TOKEN"]
+      "Content-Type"  => "application/json",
+      "Authorization" => "Bearer " + ENV["SLACK_APP_TOKEN"],
     }
   end
 
   def self.payload(instance, block)
     payload = {
       "channel": instance.channel_id,
-      "blocks": block,
-      "as_user": true
+      "blocks":  block,
+      "as_user": true,
     }
 
     if instance.timestamp
-      payload = payload.merge({ "ts": instance.timestamp })
+      payload = payload.merge({"ts": instance.timestamp})
     end
 
     payload.to_json
@@ -66,8 +66,8 @@ class Slack
   def self.delete_block(instance)
     payload = {
       "channel": instance.channel_id,
-      "ts": instance.timestamp,
-      "as_user": true
+      "ts":      instance.timestamp,
+      "as_user": true,
     }
 
     response = run("delete", payload.to_json)

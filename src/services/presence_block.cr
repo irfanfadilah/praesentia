@@ -20,29 +20,29 @@ class PresenceBlock
   def text_block(type, text) : BlockType
     {
       "type" => type,
-      "text" => text.blank? ? "---" : text
+      "text" => text.blank? ? "---" : text,
     }
   end
 
   def header(title) : BlockType
     {
       "type" => "header",
-      "text" => text_block("plain_text", title)
+      "text" => text_block("plain_text", title),
     }
   end
 
   def button(action) : BlockType
     {
-      "type" => "button",
-      "text" => text_block("plain_text", action),
-      "action_id" => action
+      "type"      => "button",
+      "text"      => text_block("plain_text", action),
+      "action_id" => action,
     }
   end
 
   def users_view(text) : BlockType
     {
       "type" => "section",
-      "text" => text_block("mrkdwn", text)
+      "text" => text_block("mrkdwn", text),
     }
   end
 
@@ -60,13 +60,13 @@ class PresenceBlock
 
   def actions_block : BlockType
     {
-      "type" => "actions",
+      "type"     => "actions",
       "elements" => [
         button("Online"),
         button("Away"),
         button("Back"),
-        button("Offline")
-      ]
+        button("Offline"),
+      ],
     }
   end
 

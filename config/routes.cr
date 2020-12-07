@@ -41,6 +41,7 @@ Amber::Server.configure do
     post "/offline", V1::SlackController, :offline
     post "/away", V1::SlackController, :away
     post "/back", V1::SlackController, :back
+    post "/respawn", V1::SlackController, :respawn
   end
 
   routes :static do

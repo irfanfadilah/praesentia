@@ -1,5 +1,5 @@
 class Slack
-  # event: postMessage | update
+  # event: postMessage | update | delete
   def self.run(event, body)
     HTTP::Client.post("https://slack.com/api/chat.#{event}", headers: headers, body: body)
   end
@@ -61,5 +61,19 @@ class Slack
       logs: activity_log(instance.channel_id)
     )
     response = run("update", payload(instance, block))
+  end
+
+  def self.delete_block(instance)
+    payload = {
+      "channel": instance.channel_id,
+      "ts": instance.timestamp,
+      "as_user": true
+    }
+
+    response = run("delete", payload.to_json)
+    json = JSON.parse(response.body)
+    if json["ok"].as_bool
+      instance.destroy
+    end
   end
 end

@@ -7,7 +7,10 @@ class Activity < Granite::Base
   column state : String
   column comment : String?
   column channel_id : String?
+  column time_offset : String?
   timestamps
+
+  before_save :set_default_time_offset
 
   def self.bump(state, params)
     activity = Activity.find_by(user_id: params[:user_id])
@@ -32,5 +35,9 @@ class Activity < Granite::Base
 
   def self.back(params)
     bump("online", params)
+  end
+
+  private def set_default_time_offset
+    self.time_offset = "+7" if time_offset.nil?
   end
 end

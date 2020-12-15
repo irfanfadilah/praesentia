@@ -48,16 +48,20 @@ class PresenceBlock
 
   def log_comment(user) : String
     if user.comment.to_s.blank?
-      "[#{timestamp(user)}] <@#{user.user_id}> is #{user.state}"
+      "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>"
     else
-      "[#{timestamp(user)}] <@#{user.user_id}> is #{user.state}: #{user.comment}"
+      "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>: #{user.comment}"
     end
   end
 
   def timestamp(user)
-    offset = user.time_offset.nil? ? "+7" : user.time_offset.not_nil!
+    unix_time = user.updated_at.not_nil!.to_s("%s")
 
-    (user.updated_at.not_nil! + offset.to_i.hours).to_s("%H:%M")
+    "<!date^#{unix_time}^{time}|¯\\_(ツ)_/¯>"
+  end
+
+  def indicator(user)
+    ":praesentia_#{user.state}:"
   end
 
   def last_logs : String

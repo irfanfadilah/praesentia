@@ -55,7 +55,9 @@ class PresenceBlock
   end
 
   def timestamp(user)
-    (user.updated_at.not_nil! + user.time_offset.not_nil!.to_i.hours).to_s("%H:%M")
+    offset = user.time_offset.nil? ? "+7" : user.time_offset.not_nil!
+
+    (user.updated_at.not_nil! + offset.to_i.hours).to_s("%H:%M")
   end
 
   def last_logs : String

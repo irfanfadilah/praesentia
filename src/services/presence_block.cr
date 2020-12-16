@@ -61,7 +61,7 @@ class PresenceBlock
   end
 
   def indicator(user)
-    ":praesentia_#{user.state}:"
+    ":is_#{user.state}:"
   end
 
   def last_logs : String

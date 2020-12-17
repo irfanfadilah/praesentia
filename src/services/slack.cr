@@ -26,7 +26,7 @@ class Slack
   end
 
   def self.active_users(channel_id)
-    Activity.where(state: "online", channel_id: channel_id)
+    Activity.where(state: ["online", "back"], channel_id: channel_id)
   end
 
   def self.away_users(channel_id)

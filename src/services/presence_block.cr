@@ -48,10 +48,20 @@ class PresenceBlock
 
   def log_comment(user) : String
     if user.comment.to_s.blank?
-      "<@#{user.user_id}> is #{user.state}"
+      "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>"
     else
-      "<@#{user.user_id}> is #{user.state} \"#{user.comment}\""
+      "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>: #{user.comment}"
     end
+  end
+
+  def timestamp(user)
+    unix_time = user.updated_at.not_nil!.to_s("%s")
+
+    "<!date^#{unix_time}^{time}|¯\\_(ツ)_/¯>"
+  end
+
+  def indicator(user)
+    ":is_#{user.state}:"
   end
 
   def last_logs : String
@@ -75,7 +85,7 @@ class PresenceBlock
     @block_array << users_view(stringify_user_id(@active))
     @block_array << header("Away")
     @block_array << users_view(stringify_user_id(@away))
-    @block_array << header("Logs")
+    @block_array << header("Activities")
     @block_array << users_view(last_logs)
     @block_array << actions_block
   end

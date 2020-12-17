@@ -31,6 +31,6 @@ class Activity < Granite::Base
   end
 
   def self.back(params)
-    bump("online", params)
+    bump("back", params)
   end
 end

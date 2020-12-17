@@ -30,7 +30,7 @@ class Slack
   end
 
   def self.away_users(channel_id)
-    Activity.all("where user_channels.channel_id = ? and activities.state in ['online', 'back']", [channel_id])
+    Activity.all("where user_channels.channel_id = ? and state = 'away'", [channel_id])
   end
 
   def self.activity_log(channel_id)

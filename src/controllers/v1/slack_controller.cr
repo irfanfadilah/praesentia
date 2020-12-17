@@ -1,7 +1,7 @@
 class V1::SlackController < ApplicationController
   def online
     spawn do
-      Activity.online(params)
+      ActivityUpdate.online(params)
       update_block_instance
     end
     respond_with(200) { text "" }
@@ -9,7 +9,7 @@ class V1::SlackController < ApplicationController
 
   def offline
     spawn do
-      Activity.offline(params)
+      ActivityUpdate.offline(params)
       update_block_instance
     end
     respond_with(200) { text "" }
@@ -17,7 +17,7 @@ class V1::SlackController < ApplicationController
 
   def away
     spawn do
-      Activity.away(params)
+      ActivityUpdate.away(params)
       update_block_instance
     end
     respond_with(200) { text "" }
@@ -25,7 +25,7 @@ class V1::SlackController < ApplicationController
 
   def back
     spawn do
-      Activity.back(params)
+      ActivityUpdate.back(params)
       update_block_instance
     end
     respond_with(200) { text "" }
@@ -42,13 +42,13 @@ class V1::SlackController < ApplicationController
 
       case
       when action == "Online"
-        Activity.online(params)
+        ActivityUpdate.online(params)
       when action == "Offline"
-        Activity.offline(params)
+        ActivityUpdate.offline(params)
       when action == "Away"
-        Activity.away(params)
+        ActivityUpdate.away(params)
       when action == "Back"
-        Activity.back(params)
+        ActivityUpdate.back(params)
       end
 
       update_block_instance

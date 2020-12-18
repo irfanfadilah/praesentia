@@ -5,12 +5,13 @@ class BlockInstanceUpdateJob < Mosquito::QueuedJob
     activities = ActivityTimeline.all("where user_channels.user_id = ?", [user_id])
     return if activities.empty?
 
-    instances = BlockInstance.where(channel_id: activities.map(&:channel_id))
-    if instances.empty?
+    instances = BlockInstance.all("where channel_id in ?", [activities.map { |elt| elt.channel_id }])
+    current_channel_instance = current_channel(instances)
+    if current_channel_instance == nil
       instance = BlockInstance.create(channel_id: channel_id)
       Slack.new_block(instance)
     else
-      Slack.update_block(current_channel(instances))
+      Slack.update_block(current_channel_instance.not_nil!)
       spawn update_block_instances(other_channels(instances))
     end
   end

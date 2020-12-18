@@ -38,7 +38,7 @@ class Slack
       .reverse
   end
 
-  def self.new_block(instance)
+  def self.new_block(instance : BlockInstance)
     block = PresenceBlock.build(
       active: active_users(instance.channel_id),
       away: away_users(instance.channel_id),
@@ -51,7 +51,7 @@ class Slack
     end
   end
 
-  def self.update_block(instance)
+  def self.update_block(instance : BlockInstance)
     block = PresenceBlock.build(
       active: active_users(instance.channel_id),
       away: away_users(instance.channel_id),
@@ -60,7 +60,7 @@ class Slack
     response = run("update", payload(instance, block))
   end
 
-  def self.delete_block(instance)
+  def self.delete_block(instance : BlockInstance)
     payload = {
       "channel": instance.channel_id,
       "ts":      instance.timestamp,

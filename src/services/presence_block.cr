@@ -5,8 +5,8 @@ class PresenceBlock
   alias BlockType = BlockStr | BlockDstr | BlockArray
 
   getter block_array : Array(BlockType)
-  getter active : Granite::Query::Builder(Activity)
-  getter away : Granite::Query::Builder(Activity)
+  getter active : Granite::Collection(Activity)
+  getter away : Granite::Collection(Activity)
   getter logs : Array(Activity)
 
   def self.build(active, away, logs)

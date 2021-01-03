@@ -26,22 +26,19 @@ class Slack
   end
 
   def self.active_users(channel_id)
-    Activity.where(state: ["online", "back"], channel_id: channel_id)
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state in ('online', 'back')", [channel_id])
   end
 
   def self.away_users(channel_id)
-    Activity.where(state: "away", channel_id: channel_id)
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'away'", [channel_id])
   end
 
   def self.activity_log(channel_id)
-    Activity.where(channel_id: channel_id)
-      .order(updated_at: :desc)
-      .limit(10)
-      .assembler.select.run # wizardy
+    ActivityTimeline.all("where user_channels.channel_id = $1 order by activities.updated_at desc limit 10", [channel_id])
       .reverse
   end
 
-  def self.new_block(instance)
+  def self.new_block(instance : BlockInstance)
     block = PresenceBlock.build(
       active: active_users(instance.channel_id),
       away: away_users(instance.channel_id),
@@ -54,7 +51,7 @@ class Slack
     end
   end
 
-  def self.update_block(instance)
+  def self.update_block(instance : BlockInstance)
     block = PresenceBlock.build(
       active: active_users(instance.channel_id),
       away: away_users(instance.channel_id),
@@ -63,7 +60,7 @@ class Slack
     response = run("update", payload(instance, block))
   end
 
-  def self.delete_block(instance)
+  def self.delete_block(instance : BlockInstance)
     payload = {
       "channel": instance.channel_id,
       "ts":      instance.timestamp,

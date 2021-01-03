@@ -2,10 +2,9 @@ class BlockInstanceUpdateJob < Mosquito::QueuedJob
   params user_id : String, channel_id : String
 
   def perform
-    activities = ActivityTimeline.all("where user_channels.user_id = ?", [user_id])
-    return if activities.empty?
+    activities = ActivityTimeline.all("where user_channels.user_id = $1", [user_id])
 
-    instances = BlockInstance.all("where channel_id in ?", [activities.map { |elt| elt.channel_id }])
+    instances = BlockInstance.where(:channel_id, :in, activities.map { |elt| elt.channel_id }).assembler.select.run
     current_channel_instance = current_channel(instances)
     if current_channel_instance == nil
       instance = BlockInstance.create(channel_id: channel_id)

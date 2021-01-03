@@ -26,15 +26,15 @@ class Slack
   end
 
   def self.active_users(channel_id)
-    Activity.all("where user_channels.channel_id = ? and state in ['online', 'back']", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state in ('online', 'back')", [channel_id])
   end
 
   def self.away_users(channel_id)
-    Activity.all("where user_channels.channel_id = ? and state = 'away'", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'away'", [channel_id])
   end
 
   def self.activity_log(channel_id)
-    Activity.all("where user_channels.channel_id = ? order by updated_at desc limit 10", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 order by activities.updated_at desc limit 10", [channel_id])
       .reverse
   end
 

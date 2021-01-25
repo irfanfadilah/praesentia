@@ -61,8 +61,6 @@ class V1::SlackController < ApplicationController
       when action == "Custom"
         ModalBlock.open(params)
       end
-
-      update_block_instance
     end
 
     respond_with(200) { text "" }
@@ -82,12 +80,6 @@ class V1::SlackController < ApplicationController
     end
 
     respond_with(200) { text "" }
-  end
-
-  private def update_block_instance
-    BlockInstanceUpdateJob
-      .new(user_id: params[:user_id], channel_id: params[:channel_id])
-      .perform
   end
 
   private def respawn_block_instance

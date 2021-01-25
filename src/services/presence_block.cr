@@ -76,6 +76,7 @@ class PresenceBlock
         button("Away"),
         button("Back"),
         button("Offline"),
+        button("Custom")
       ],
     }
   end

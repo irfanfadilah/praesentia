@@ -34,11 +34,20 @@ class V1::SlackController < ApplicationController
   def interactivity
     spawn do
       data = JSON.parse params[:payload]
-      action = data["actions"][0]["action_id"]
 
-      params[:user_id] = data["user"]["id"].as_s
-      params[:channel_id] = data["channel"]["id"].as_s
-      params[:text] = ""
+      if data["type"] == "view_submission"
+        states = data["view"]["state"]["values"]
+        action = states["block_status"]["custom_status"]["selected_option"]["value"]
+        params[:text] = states["block_message"]["custom_message"]["value"].as_s
+        params[:user_id] = data["user"]["id"].as_s
+        params[:channel_id] = ""
+      else
+        action = data["actions"][0]["action_id"]
+        params[:user_id] = data["user"]["id"].as_s
+        params[:channel_id] = data["channel"]["id"].as_s
+        params[:trigger_id] = data["trigger_id"].as_s
+        params[:text] = ""
+      end
 
       case
       when action == "Online"
@@ -49,6 +58,8 @@ class V1::SlackController < ApplicationController
         ActivityUpdate.away(params)
       when action == "Back"
         ActivityUpdate.back(params)
+      when action == "Custom"
+        ModalBlock.open(params)
       end
 
       update_block_instance

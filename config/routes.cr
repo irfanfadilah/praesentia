@@ -42,6 +42,7 @@ Amber::Server.configure do
     post "/away", V1::SlackController, :away
     post "/back", V1::SlackController, :back
     post "/respawn", V1::SlackController, :respawn
+    post "/reinit", V1::SlackController, :reinit
   end
 
   routes :static do

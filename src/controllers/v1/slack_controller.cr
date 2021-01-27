@@ -57,8 +57,19 @@ class V1::SlackController < ApplicationController
     respond_with(200) { text "" }
   end
 
+  # Delete existing instance and repost it
   def respawn
     spawn respawn_block_instance
+    respond_with(200) { text "" }
+  end
+
+  # Post new instance based on existing instance
+  def reinit
+    spawn do
+      instance = BlockInstance.find_by(channel_id: params[:channel_id])
+      Slack.new_block(instance) if instance
+    end
+
     respond_with(200) { text "" }
   end
 

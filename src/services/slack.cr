@@ -26,7 +26,7 @@ class Slack
   end
 
   def self.active_users(channel_id)
-    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state in ('online', 'back')", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'online'", [channel_id])
   end
 
   def self.away_users(channel_id)

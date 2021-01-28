@@ -6,6 +6,6 @@ class Activity < Granite::Base
   column user_id : String, unique: true
   column state : String
   column comment : String?
-  column channel_id : String? # last activity at this channel
+  column channel_id : String
   timestamps
 end

@@ -74,7 +74,6 @@ class PresenceBlock
       "elements" => [
         button("Online"),
         button("Away"),
-        button("Back"),
         button("Offline"),
         button(":speech_balloon:")
       ],

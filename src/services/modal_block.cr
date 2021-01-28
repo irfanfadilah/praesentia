@@ -7,7 +7,7 @@ class ModalBlock
   def self.headers
     headers = HTTP::Headers{
       "Content-Type"  => "application/json",
-      "Authorization" => "Bearer " + "xoxb-2176750000-1534408179079-DOqgMln3pE4COJkRFkiWs0ka",
+      "Authorization" => "Bearer " + ENV["SLACK_APP_TOKEN"],
     }
   end
 
@@ -42,12 +42,12 @@ class ModalBlock
             "element": {
               "type": "plain_text_input",
               "action_id": "custom_message",
-              "emoji": true
+              "min_length": 1,
+              "max_length": 144
             },
             "label": {
               "type": "plain_text",
-              "text": "Message",
-              "emoji": true
+              "text": "Message"
             }
           },
           {
@@ -59,7 +59,7 @@ class ModalBlock
                 {
                   "text": {
                     "type": "plain_text",
-                    "text": "Online",
+                    "text": ":is_online: Online",
                     "emoji": true
                   },
                   "value": "Online"
@@ -67,7 +67,7 @@ class ModalBlock
                 {
                   "text": {
                     "type": "plain_text",
-                    "text": "Away",
+                    "text": ":is_away: Away",
                     "emoji": true
                   },
                   "value": "Away"
@@ -75,7 +75,7 @@ class ModalBlock
                 {
                   "text": {
                     "type": "plain_text",
-                    "text": "Offline",
+                    "text": ":is_offline: Offline",
                     "emoji": true
                   },
                   "value": "Offline"

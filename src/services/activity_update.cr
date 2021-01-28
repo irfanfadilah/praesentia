@@ -25,8 +25,4 @@ class ActivityUpdate
   def self.away(params)
     bump("away", params)
   end
-
-  def self.back(params)
-    bump("back", params)
-  end
 end

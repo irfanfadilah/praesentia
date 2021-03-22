@@ -83,12 +83,21 @@ class PresenceBlock
   end
 
   def to_block_array
-    @block_array << header("Online")
-    @block_array << users_view(stringify_user_id(@active))
-    @block_array << header("Away")
-    @block_array << users_view(stringify_user_id(@away))
-    @block_array << header("On Leave")
-    @block_array << users_view(stringify_user_id(@leave))
+    unless @active.empty?
+      @block_array << header("Online")
+      @block_array << users_view(stringify_user_id(@active))
+    end
+
+    unless @away.empty?
+      @block_array << header("Away")
+      @block_array << users_view(stringify_user_id(@away))
+    end
+
+    unless @leave.empty?
+      @block_array << header("On Leave")
+      @block_array << users_view(stringify_user_id(@leave))
+    end
+
     @block_array << header("Activities")
     @block_array << users_view(last_logs)
     @block_array << actions_block

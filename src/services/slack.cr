@@ -33,6 +33,10 @@ class Slack
     ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'away'", [channel_id])
   end
 
+  def self.leave_users(channel_id)
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'leave'", [channel_id])
+  end
+
   def self.activity_log(channel_id)
     ActivityTimeline.all("where user_channels.channel_id = $1 order by activities.updated_at desc limit 10", [channel_id])
       .reverse
@@ -42,6 +46,7 @@ class Slack
     block = PresenceBlock.build(
       active: active_users(instance.channel_id),
       away: away_users(instance.channel_id),
+      leave: leave_users(instance.channel_id),
       logs: activity_log(instance.channel_id)
     )
     response = run("postMessage", payload(instance, block))
@@ -55,6 +60,7 @@ class Slack
     block = PresenceBlock.build(
       active: active_users(instance.channel_id),
       away: away_users(instance.channel_id),
+      leave: leave_users(instance.channel_id),
       logs: activity_log(instance.channel_id)
     )
     response = run("update", payload(instance, block))

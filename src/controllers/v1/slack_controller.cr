@@ -26,6 +26,8 @@ class V1::SlackController < ApplicationController
         ActivityUpdate.offline(params)
       when "Away"
         ActivityUpdate.away(params)
+      when "Leave"
+        ActivityUpdate.leave(params)
       when ":speech_balloon:"
         ModalBlock.open(params)
       end
@@ -51,6 +53,12 @@ class V1::SlackController < ApplicationController
   # /afk [message]
   def away
     spawn ActivityUpdate.away(params)
+    respond_with(200) { text "" }
+  end
+
+  # /leave [message]
+  def leave
+    spawn ActivityUpdate.leave(params)
     respond_with(200) { text "" }
   end
 

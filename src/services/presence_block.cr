@@ -7,13 +7,14 @@ class PresenceBlock
   getter block_array : Array(BlockType)
   getter active : Granite::Collection(ActivityTimeline)
   getter away : Granite::Collection(ActivityTimeline)
+  getter leave : Granite::Collection(ActivityTimeline)
   getter logs : Array(ActivityTimeline)
 
-  def self.build(active, away, logs)
-    new(active, away, logs).to_block_array
+  def self.build(active, away, leave, logs)
+    new(active, away, leave, logs).to_block_array
   end
 
-  def initialize(@active, @away, @logs)
+  def initialize(@active, @away, @leave, @logs)
     @block_array = [] of BlockType
   end
 
@@ -74,6 +75,7 @@ class PresenceBlock
       "elements" => [
         button("Online"),
         button("Away"),
+        button("Leave"),
         button("Offline"),
         button(":speech_balloon:")
       ],
@@ -85,6 +87,8 @@ class PresenceBlock
     @block_array << users_view(stringify_user_id(@active))
     @block_array << header("Away")
     @block_array << users_view(stringify_user_id(@away))
+    @block_array << header("On Leave")
+    @block_array << users_view(stringify_user_id(@leave))
     @block_array << header("Activities")
     @block_array << users_view(last_logs)
     @block_array << actions_block

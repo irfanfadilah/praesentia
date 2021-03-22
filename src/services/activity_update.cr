@@ -20,6 +20,10 @@ class ActivityUpdate
     bump("away", params)
   end
 
+  def self.leave(params)
+    bump("leave", params)
+  end
+
   # Private Methods
 
   private def self.update_activity(activity, state, params)

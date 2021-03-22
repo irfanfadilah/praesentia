@@ -75,6 +75,14 @@ class ModalBlock
                 {
                   "text": {
                     "type": "plain_text",
+                    "text": ":on_leave: Leave",
+                    "emoji": true
+                  },
+                  "value": "Leave"
+                },
+                {
+                  "text": {
+                    "type": "plain_text",
                     "text": ":is_offline: Offline",
                     "emoji": true
                   },

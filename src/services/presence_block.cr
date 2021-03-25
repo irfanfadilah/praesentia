@@ -48,7 +48,7 @@ class PresenceBlock
   end
 
   def log_comment(user) : String
-    "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>: #{user.comment}"
+    "[#{timestamp(user)}] #{user} <@#{user.user_id}>: #{user.comment}"
   end
 
   def timestamp(user)
@@ -76,25 +76,25 @@ class PresenceBlock
 
   def to_block_array
     unless @active.empty?
-      @block_array << header("Online")
+      @block_array << header(":indicator_online: Online")
       @block_array << users_row(@active) if without_comments?(@active)
       @block_array << users_with_comments(@active) if with_comments?(@active)
     end
 
     unless @away.empty?
-      @block_array << header("Away")
+      @block_array << header(":indicator_away: Away")
       @block_array << users_row(@away) if without_comments?(@away)
       @block_array << users_with_comments(@away) if with_comments?(@away)
     end
 
     unless @leave.empty?
-      @block_array << header("On Leave")
+      @block_array << header(":indicator_onleave: On Leave")
       @block_array << users_row(@leave) if without_comments?(@leave)
       @block_array << users_with_comments(@leave) if with_comments?(@leave)
     end
 
     unless @offline.empty?
-      @block_array << header("Offline")
+      @block_array << header(":indicator_offline: Offline")
       @block_array << users_row(@offline) if without_comments?(@offline)
       @block_array << users_with_comments(@offline) if with_comments?(@offline)
     end

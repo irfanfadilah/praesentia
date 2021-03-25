@@ -47,12 +47,6 @@ class PresenceBlock
     }
   end
 
-  def users_with_comment(users)
-    users
-      .select { |u| u.comment.present? }
-      .map { |user| log_comment(user) }
-  end
-
   def log_comment(user) : String
     "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>: #{user.comment}"
   end
@@ -83,34 +77,54 @@ class PresenceBlock
   def to_block_array
     unless @active.empty?
       @block_array << header("Online")
-      @block_array << users_view(stringify_user_id(@active))
-      @block_array << users_with_comment(@active)
+      @block_array << users_row(@active) if without_comments?(@active)
+      @block_array << users_with_comments(@active) if with_comments?(@active)
     end
 
     unless @away.empty?
       @block_array << header("Away")
-      @block_array << users_view(stringify_user_id(@away))
-      @block_array << users_with_comment(@away)
+      @block_array << users_row(@away) if without_comments?(@away)
+      @block_array << users_with_comments(@away) if with_comments?(@away)
     end
 
     unless @leave.empty?
       @block_array << header("On Leave")
-      @block_array << users_view(stringify_user_id(@leave))
-      @block_array << users_with_comment(@leave)
+      @block_array << users_row(@leave) if without_comments?(@leave)
+      @block_array << users_with_comments(@leave) if with_comments?(@leave)
     end
 
     unless @offline.empty?
       @block_array << header("Offline")
-      @block_array << users_view(stringify_user_id(@offline))
-      @block_array << users_with_comment(@offline)
+      @block_array << users_row(@offline) if without_comments?(@offline)
+      @block_array << users_with_comments(@offline) if with_comments?(@offline)
     end
 
     @block_array << actions_block
   end
 
-  private def stringify_user_id(users)
-    users
-      .select { |u| u.comment.blank? }
+  # Private Methods
+
+  private def with_comments?(users)
+    users.reject { |u| u.comment.empty? }.size > 0
+  end
+
+  private def without_comments?(users)
+    users.select { |u| u.comment.empty? }.size > 0
+  end
+
+  private def users_row(users)
+    row = users
+      .select { |u| u.comment.empty? }
       .map { |elt| "<@#{elt.user_id}>" }.join(", ")
+
+    users_view(row)
+  end
+
+  private def users_with_comments(users)
+    list = users
+      .reject { |u| u.comment.empty? }
+      .map { |user| log_comment(user) }.join("\n")
+
+    users_view(list)
   end
 end

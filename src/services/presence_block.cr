@@ -48,7 +48,7 @@ class PresenceBlock
   end
 
   def log_comment(user) : String
-    "[#{timestamp(user)}] #{user} <@#{user.user_id}>: #{user.comment}"
+    "[#{timestamp(user)}] <@#{user.user_id}>: #{user.comment}"
   end
 
   def timestamp(user)

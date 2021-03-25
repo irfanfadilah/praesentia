@@ -8,13 +8,13 @@ class PresenceBlock
   getter active : Granite::Collection(ActivityTimeline)
   getter away : Granite::Collection(ActivityTimeline)
   getter leave : Granite::Collection(ActivityTimeline)
-  getter logs : Array(ActivityTimeline)
+  getter offline : Granite::Collection(ActivityTimeline)
 
-  def self.build(active, away, leave, logs)
-    new(active, away, leave, logs).to_block_array
+  def self.build(active, away, leave, offline)
+    new(active, away, leave, offline).to_block_array
   end
 
-  def initialize(@active, @away, @leave, @logs)
+  def initialize(@active, @away, @leave, @offline)
     @block_array = [] of BlockType
   end
 
@@ -47,12 +47,14 @@ class PresenceBlock
     }
   end
 
+  def users_with_comment(users)
+    users
+      .select { |u| u.comment.present? }
+      .map { |user| log_comment(user) }
+  end
+
   def log_comment(user) : String
-    if user.comment.to_s.blank?
-      "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>"
-    else
-      "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>: #{user.comment}"
-    end
+    "[#{timestamp(user)}] #{indicator(user)} <@#{user.user_id}>: #{user.comment}"
   end
 
   def timestamp(user)
@@ -63,10 +65,6 @@ class PresenceBlock
 
   def indicator(user)
     ":is_#{user.state}:"
-  end
-
-  def last_logs : String
-    logs.map { |elt| log_comment(elt) }.join("  \n")
   end
 
   def actions_block : BlockType
@@ -86,24 +84,33 @@ class PresenceBlock
     unless @active.empty?
       @block_array << header("Online")
       @block_array << users_view(stringify_user_id(@active))
+      @block_array << users_with_comment(@active)
     end
 
     unless @away.empty?
       @block_array << header("Away")
       @block_array << users_view(stringify_user_id(@away))
+      @block_array << users_with_comment(@away)
     end
 
     unless @leave.empty?
       @block_array << header("On Leave")
       @block_array << users_view(stringify_user_id(@leave))
+      @block_array << users_with_comment(@leave)
     end
 
-    @block_array << header("Activities")
-    @block_array << users_view(last_logs)
+    unless @offline.empty?
+      @block_array << header("Offline")
+      @block_array << users_view(stringify_user_id(@offline))
+      @block_array << users_with_comment(@offline)
+    end
+
     @block_array << actions_block
   end
 
   private def stringify_user_id(users)
-    users.map { |elt| "<@#{elt.user_id}>" }.join(", ")
+    users
+      .select { |u| u.comment.blank? }
+      .map { |elt| "<@#{elt.user_id}>" }.join(", ")
   end
 end

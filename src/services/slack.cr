@@ -26,19 +26,19 @@ class Slack
   end
 
   def self.active_users(channel_id)
-    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'online' order by activities.updated_at desc", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'online' order by activities.updated_at asc", [channel_id])
   end
 
   def self.away_users(channel_id)
-    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'away' order by activities.updated_at desc", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'away' order by activities.updated_at asc", [channel_id])
   end
 
   def self.leave_users(channel_id)
-    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'leave' order by activities.updated_at desc", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'leave' order by activities.updated_at asc", [channel_id])
   end
 
   def self.offline_users(channel_id)
-    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'offline' order by activities.updated_at desc", [channel_id])
+    ActivityTimeline.all("where user_channels.channel_id = $1 and activities.state = 'offline' order by activities.updated_at asc", [channel_id])
   end
 
   def self.new_block(instance : BlockInstance)

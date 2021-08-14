@@ -43,6 +43,7 @@ Amber::Server.configure do
     post "/leave", V1::SlackController, :leave
     post "/respawn", V1::SlackController, :respawn
     post "/reinit", V1::SlackController, :reinit
+    post "/unlist", V1::SlackController, :unlist
   end
 
   routes :static do

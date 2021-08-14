@@ -30,7 +30,7 @@ class ActivityUpdate
 
     user_channel.destroy
     instance = BlockInstance.find_by(channel_id: params[:channel_id])
-    Slack.update_block(instance)
+    Slack.update_block(instance.not_nil!)
   end
 
   # Private Methods

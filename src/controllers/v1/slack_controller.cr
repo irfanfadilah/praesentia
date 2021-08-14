@@ -76,4 +76,10 @@ class V1::SlackController < ApplicationController
     end
     respond_with(200) { text "" }
   end
+
+  # /unlist - Remove user from a channel
+  def unlist
+    spawn ActivityUpdate.unlist(params)
+    respond_with(200) { text "" }
+  end
 end

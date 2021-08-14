@@ -24,6 +24,15 @@ class ActivityUpdate
     bump("leave", params)
   end
 
+  def self.unlist(params)
+    user_channel = UserChannel.find_by(user_id: params[:text], channel_id: params[:channel_id])
+
+    return if user_channel.nil?
+
+    user_channel.destroy
+    BlockInstanceUpdateJob.new(user_id: params[:text], channel_id: params[:channel_id]).perform
+  end
+
   # Private Methods
 
   private def self.update_activity(activity, state, params)

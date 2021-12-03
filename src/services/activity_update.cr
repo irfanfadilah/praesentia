@@ -37,13 +37,17 @@ class ActivityUpdate
 
   private def self.update_activity(activity, state, params)
     if activity
-      if params[:channel_id] == ""
-        activity.update!(state: state, comment: params[:text])
+      if params[:channel_id].blank?
+        if activity.channel_id.blank?
+          activity.update!(state: state, comment: params[:text], channel_id: "G01G2CXUVS9")
+        else
+          activity.update!(state: state, comment: params[:text])
+        end
       else
         activity.update!(state: state, comment: params[:text], channel_id: params[:channel_id])
       end
     else
-      channel_id = (params[:channel_id] == "" ? "G01G2CXUVS9" : params[:channel_id])
+      channel_id = (params[:channel_id].blank? ? "G01G2CXUVS9" : params[:channel_id])
       activity = Activity.create!(state: state, user_id: params[:user_id], channel_id: channel_id, comment: params[:text])
     end
 
